@@ -9,3 +9,4 @@ gsettings set org.gnome.desktop.session idle-delay 0
 gsettings set org.gnome.desktop.background primary-color '#000000'
 gsettings set org.gnome.desktop.background picture-uri ''
 gsettings set org.gnome.desktop.notifications show-banners false
+landscape-sysinfo
