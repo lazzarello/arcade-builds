@@ -3,7 +3,9 @@
 echo "this script changes system settings as root for bootup and package settings"
 
 apt-get update && apt-get upgrade -y
+# https://ubuntu.com/landscape/docs/install-landscape-client
 apt-get install -y landscape-client
+apt remove -y unattended-upgrades update-notifier
 
 # REF: https://askubuntu.com/questions/1322292/how-do-i-turn-off-automatic-updates-completely-and-for-real
 cat <<-EOF > /etc/apt/apt.conf.d/20auto-upgrades
@@ -13,7 +15,6 @@ APT::Periodic::AutocleanInterval "0";
 APT::Periodic::Unattended-Upgrade "0";
 EOF
 
-apt remove -y unattended-upgrades
 echo "enabled=0" > /etc/default/apport
 
 cat <<-EOF > /etc/default/grub
