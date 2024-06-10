@@ -1,1 +1,3 @@
 cloud-init.yaml
+*.zip
+*.snap
