@@ -2,11 +2,19 @@
 
 This is a collection of scripts and hand written notes gathered during a project to make an arcade cabinet management system. More details written at https://blog.griftmarket.com/
 
-## Shell Scripts
+## Game Stuff
 
-They do stuff for operators setting up new cabinets.
+For cabinets running a stock Ubuntu Linux PC, there are two shell scripts in this repository to serve as a starting point for your own bootstrapping preferences. After installing the base OS and creating an unpriviledged user, run the autobuild.sh script as root. This changes a couple things to make it function more like a kiosk. It disables all automatic updates.
+
+All the Gnome desktop settings and application startup bits can be automated through the user-settings.sh and .desktop files. The example application is Xeyes.
+
+Each game is packaged as a snap using the canonical Snapcraft system. The games for the initial project use GameMaker Studio and Unity3D as of 2022. The snapcraft.yaml files in each directory demonstrate how to build a custom snap in devmode for each type of binary. The game arcives are proprietary to the authors, so they are not included here. You can use any .zip archive output from GSM v2. You can use any binary linked to a UnityPlayer.so build from the LTS Unity Linux target.
+
+Installations and updates over the internet are managed through a private snap server. Instructions for setting that up TBD.
 
 ## Cloud stuff
+
+Each cabinet is managed as a single Ubuntu desktop through Canonical Landscape. What follows are the self-hosted instructions I followed for Google Cloud.
 
 * Get a Google Cloud account and add a credit card.
 * Install the `gcloud` [command line utility}(https://ubuntu.com/landscape/docs/install-on-google-cloud)
@@ -25,11 +33,26 @@ gcloud dns record-sets create landscape.example.com \
 * Use the normal "quickstart" config in this repo
 * Use the e2-medium, it's fine for small installations
 
+For reference, here's the command line that starts the instance, with some customizations.
+
+```
+ZONE=us-west1-a
+IMAGE_FAMILY=ubuntu-pro-2404-lts-amd64
+gcloud compute instances create landscape \
+    --zone $ZONE \
+    --machine-type=e2-medium \
+    --address landscape-external-ip \
+    --tags http-server,https-server \
+    --boot-disk-size 50 \
+    --boot-disk-type pd-ssd \
+    --image-family $IMAGE_FAMILY \
+    --image-project ubuntu-os-pro-cloud \
+    --metadata-from-file user-data=cloud-init.yaml
+```
+
 A potential problem here is if you don't get the networking tags right the first time, the SSL certificate fails. Rebooting doesn't try and validate it again. Also, if you skip the SMTP stuff, which requires a considerable amount of preperation to get the values to input, manually setting it up is quite difficult.
 
-Is there a Canonical supported way to replay some of the quickstart process?
-
-Anyhoo...DSM arcade number one! We did it!
+If either of these two problems happenes and you're ambitious, you can [follow the manual installation guide.](https://ubuntu.com/landscape/install) This has all the information you need to step through any of the quickstart process that didn't work. You can also re-create the virtual machine after fixing any problems.
 
 ## Register a client
 
@@ -39,4 +62,6 @@ This will bring up an interactive registration procedure. Any access groups you 
 
 ## Email
 
-Email is optional but can he nice. It's my least favorite part of setting up any web service. Just go with SendGrid and pay them money. There are a bunch of other ways to do it but I'll leave that exercise to the overachievers.
+Email is optional but can be nice. Email is required if you want to add a second administrator account. Just go with SendGrid and pay them money. There are a bunch of other ways to do it but I'll leave that exercise to the overachievers.
+
+I set it up with MailGun's free service, which they hide. It took about an hour and a half to get right. I won't go into that here.

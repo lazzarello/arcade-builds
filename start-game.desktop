@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Exec=/usr/bin/xeyes
+Icon=/home/user/Pictures/session_image.jpg
+Name=Xeyes
+Comment=Start Xeyes

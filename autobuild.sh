@@ -4,7 +4,8 @@ echo "this script changes system settings as root for bootup and package setting
 
 apt-get update && apt-get upgrade -y
 # https://ubuntu.com/landscape/docs/install-landscape-client
-apt-get install -y landscape-client
+# apt-get install -y landscape-client
+snap install landscape-client
 apt remove -y unattended-upgrades update-notifier
 
 # REF: https://askubuntu.com/questions/1322292/how-do-i-turn-off-automatic-updates-completely-and-for-real
