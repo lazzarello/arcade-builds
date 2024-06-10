@@ -1,0 +1,34 @@
+name: perfect-pour
+version: "v0.6.2"
+summary: Perfect Pour
+description: |
+  Pour Drinks! It's fun!
+base: core22
+grade: devel
+confinement: devmode
+  # compression: lzo # might decrease install/upgrade time
+parts:
+  perfect-pour:
+    plugin: dump
+    source: PerfectPour_v0-6-2_Linux64_Standalone.zip
+    override-build: |
+      snapcraftctl build
+      cd $SNAPCRAFT_PART_INSTALL/PerfectPour_v0-6-2_Linux64_Standalone/
+      ln -s Perfect\ Pour.x86_64 perfect-pour
+apps:
+  perfect-pour:
+    extensions: [gnome]
+    command: bin/desktop-launch $SNAP/PerfectPour_v0-6-2_Linux64_Standalone/perfect-pour
+    environment:
+      LD_LIBRARY_PATH: "$SNAP/PerfectPour_v0-6-2_Linux64_Standalone/Perfect\ Pour_Data/Plugins:$LD_LIBRARY_PATH"
+    plugs:
+      - audio-playback
+      - desktop
+      - desktop-legacy
+      - network
+      - network-bind
+      - opengl
+      - pulseaudio
+      - unity7
+      - wayland
+      - x11
