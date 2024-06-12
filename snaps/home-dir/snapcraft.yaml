@@ -1,0 +1,18 @@
+name: home-dir
+version: "one"
+summary: example home plug 
+description: |
+  Plug into home!
+base: core22
+grade: stable
+confinement: strict
+compression: lzo # might decrease install/upgrade time
+parts:
+  home-dir:
+    plugin: dump
+    source: .
+apps:
+  home-dir:
+    command: list-homedir.sh
+    plugs:
+      - home
