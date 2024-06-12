@@ -4,9 +4,9 @@ summary: Perfect Pour
 description: |
   Pour Drinks! It's fun!
 base: core22
-grade: devel
-confinement: devmode
-  # compression: lzo # might decrease install/upgrade time
+grade: stable
+confinement: strict
+compression: lzo # might decrease install/upgrade time
 parts:
   perfect-pour:
     plugin: dump
@@ -26,9 +26,8 @@ apps:
       - desktop
       - desktop-legacy
       - network
-      - network-bind
       - opengl
-      - pulseaudio
-      - unity7
       - wayland
       - x11
+      - home
+      - joystick
