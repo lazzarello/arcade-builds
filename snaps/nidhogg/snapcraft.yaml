@@ -1,5 +1,5 @@
 name: nidhogg-2
-version: "2023061201"
+version: "2023071301"
 summary: Nidhogg 2 build from Game Maker Studio version 2
 description: |
   Outsmart your opponents with all kinds of weapons in this life or death tug-of-war that ends in the belly of a flying worm.
@@ -44,7 +44,7 @@ parts:
       - libxrender1
       - libxxf86vm1
     plugin: dump
-    source: Nidhogg-2_GMS2_2023061201.zip
+    source: Nidhogg-2_GMS2_2023071301.zip
     after:
       - desktop-glib-only
   desktop-glib-only:

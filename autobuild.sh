@@ -30,3 +30,6 @@ GRUB_DISABLE_RECOVERY="true"
 EOF
 
 update-grub
+
+# /usr/share/plymouth theme goes here
+# yikes, Plymouth is a whole thing...https://wiki.ubuntu.com/Plymouth#Splash_Theme
