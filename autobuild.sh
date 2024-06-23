@@ -4,7 +4,7 @@ echo "this script changes system settings as root for bootup and package setting
 
 apt-get update && apt-get upgrade -y
 # https://ubuntu.com/landscape/docs/install-landscape-client
-# apt-get install -y landscape-client
+apt-get install -y gnome-kiosk
 snap install landscape-client
 apt remove -y unattended-upgrades update-notifier
 
