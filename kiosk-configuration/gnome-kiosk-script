@@ -1,0 +1,4 @@
+wine /home/user/game/Switch\ \'N\'\ Shoot\ -\ Arcade.exe
+
+sleep 1.0
+exec "$0" "$@"
