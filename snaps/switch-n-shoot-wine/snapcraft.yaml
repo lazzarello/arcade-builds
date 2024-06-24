@@ -1,0 +1,106 @@
+name: switch-n-shoot
+title: switch-n-shoot (WINE)
+summary: "Piloting an advanced star fighter with just one button is simple."
+description: |
+  Piloting an advanced star fighter with just one button is simple: you switch, you shoot. Every shot fired changes your direction, and mastering this is the key to becoming a legend among the stars. Timing is everything!
+
+  Don't underestimate its simplicity; this game tests your reflexes like no other! And while your ship might become stardust in a matter of seconds, you can instantly jump back in for "just one more go".
+adopt-info: switch-n-shoot
+
+confinement: strict
+grade: stable
+architectures:
+  - build-on: amd64
+base: core20
+compression: lzo
+
+plugs:
+  wine-runtime-c20:
+    interface: content
+    target: $SNAP/wine-runtime
+    default-provider: wine-platform-runtime-core20
+  wine-7-devel:
+    interface: content
+    target: $SNAP/wine-platform
+    default-provider: wine-platform-7-devel-core20
+
+environment:
+  WINEDLLOVERRIDES: "mscoree,mshtml="  # Prevent pop-ups about Wine Mono and Wine Gecko
+  RUN_EXE: "$SNAP/SwitchNShoot_1-3-6_Windows64_Arcade_Landscape/switch-n-shoot.exe"
+  SOMMELIER_KEEP_CWD: "1"  # Don't change the working directory so relative paths still work
+  NO_AT_BRIDGE: "1"  # Fix yad error Failed to connect to socket /tmp/dbus-xxx: No such file or directory
+  DISABLE_WAYLAND: "1"  # Fix gtk decoration under wayland session
+  SYSTEM_WGETRC: $SNAP/wine-runtime/etc/wgetrc
+
+apps:
+  switch-n-shoot:
+    extensions: [ gnome-3-38 ]
+    command: bin/sommelier run-exe
+    plugs:
+      - audio-playback
+      - opengl
+      - home
+      - network
+      - hardware-observe
+      - process-control
+      - cups-control
+      - removable-media
+  # desktop: usr/share/applications/switch-n-shoot.desktop
+  # The wine command can be used to run applications inside the wine
+  # environment that this snap uses.
+  #
+  # For example, users can configure the wine environment of this snap
+  # by running `myapp.wine winecfg`.
+  wine:
+    extensions: [ gnome-3-38 ]
+    command: bin/sommelier
+    plugs:
+      - home
+      - network
+      - hardware-observe
+      - process-control
+      - cups-control
+      - removable-media
+  # The winetricks command can be used to run winetricks inside the wine
+  # environment that this snap uses.
+  winetricks:
+    extensions: [ gnome-3-38 ]
+    command: bin/sommelier winetricks
+    plugs:
+      - network
+parts:
+  switch-n-shoot:
+    plugin: dump
+    source: SwitchNShoot_1-3-6_Windows64_Arcade_Landscape.zip
+    override-build: |
+      snapcraftctl build
+      set -ex
+      cd $SNAPCRAFT_PART_INSTALL/SwitchNShoot_1-3-6_Windows64_Arcade_Landscape
+      mv Switch\ \'N\'\ Shoot\ -\ Arcade.exe switch-n-shoot.exe
+      mv Switch\ \'N\'\ Shoot\ -\ Arcade_Data/ switch-n-shoot_Data
+      snapcraftctl set-version "1.3.6"
+    build-packages: 
+      - wget
+  # The sommelier script helps you snap Windows applications using Wine. It
+  # initializes and configures Wine and installs the Windows application.
+  sommelier:
+    plugin: make
+    source: https://github.com/snapcrafters/sommelier-core.git
+    source-branch: "master"
+    build-packages:
+      - libc6-dev-i386
+      - gcc-multilib
+
+  # This reverts changes from https://github.com/snapcore/snapcraft/pull/3586
+  fix-fontconfig:
+    plugin: nil
+    after: [gnome-3-38-extension]
+    override-prime: |
+      sed -i '/snap-package/,+1d' $SNAPCRAFT_PRIME/snap/command-chain/desktop-launch
+
+  fix-bindtext:
+    plugin: nil
+    after: [gnome-3-38-extension]
+    override-prime: |
+      sed -i "$(grep -in bindtext $SNAPCRAFT_PRIME/snap/command-chain/desktop-launch | cut -d':' -f1 | tail -2 | head -1)d" $SNAPCRAFT_PRIME/snap/command-chain/desktop-launch
+      sed -i "$(grep -in bindtext $SNAPCRAFT_PRIME/snap/command-chain/desktop-launch | cut -d':' -f1 | tail -1)d" $SNAPCRAFT_PRIME/snap/command-chain/desktop-launch

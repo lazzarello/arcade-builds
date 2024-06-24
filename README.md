@@ -4,13 +4,21 @@ This is a collection of scripts and hand written notes gathered during a project
 
 ## Game Stuff
 
+*Experimental Kiosk mode!*
+
+Gnome-kiosk creates a Gnome session that removes all interactive desktop features and runs a single shell script as the only application. 
+
+*Manual desktop mode*
+
 For cabinets running a stock Ubuntu Linux PC, there are two shell scripts in this repository to serve as a starting point for your own bootstrapping preferences. After installing the base OS and creating an unprivileged user, run the autobuild.sh script as root. This changes a couple things to make it function more like a kiosk. It disables all automatic updates.
 
 All the Gnome desktop settings and application startup bits can be automated through the user-settings.sh and .desktop files. The example application is Xeyes.
 
-Each game is packaged as a snap using the canonical Snapcraft system. The games for the initial project use GameMaker Studio and Unity3D as of 2022. The snapcraft.yaml files in each directory demonstrate how to build a custom snap in devmode for each type of binary. The game archives are proprietary to the authors, so they are not included here. You can use any .zip archive output from GSM v2. You can use any binary linked to a UnityPlayer.so build from the LTS Unity Linux target.
+Each game is packaged as a snap using the canonical Snapcraft system. The snapcraft.yaml files in the snaps directory demonstrate how to build a custom snap for each type of binary. The game archives are proprietary to the authors, so they are not included here. You can use any .zip archive output from GSM v2. The Unity games run a Windows binary through Wine.
 
-Installations and updates over the internet are managed through a private snap server. Instructions for setting that up TBD.
+Registering a private snap name is a manual process. All names must be unique in the whole Snap store, including private names. Unique names are registered by Canonical employees hours after a new name is registered.
+
+Uploading a private snap is done after logging into the Snap store with a valid Ubuntu One account and registering the name. After the name is registered for example, run `snapcraft upload --release=latest/edge switch-n-shoot_1.3.6_amd64.snap` to upload version 1.3.6 (version specified in snapcraft.yaml) of switch-n-shoot to the latest/edge channel.
 
 ## Cloud stuff
 
