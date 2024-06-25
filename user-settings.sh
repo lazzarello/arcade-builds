@@ -1,6 +1,6 @@
 #!/bin/bash
 set -x
-echo "this script changes user mode settings for game playback and visual appearance"
+echo "this script changes user mode settings for operator mode visual appearance"
 
 # Nautilus was removed in 24.04
 # gsettings set org.gnome.nautilus.desktop trash-icon-visible false
@@ -14,10 +14,11 @@ gsettings set org.gnome.desktop.notifications show-banners false
 gsettings set com.ubuntu.update-notifier no-show-notifications true
 gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 16
 
+# add operator-mode script to executable path
+mkdir ~/bin
+cp kiosk-configuration/operator-mode ~/bin/
+echo "PATH=\$PATH:\$HOME/bin" >> .bashrc
 echo "Mark the desktop icon as trusted so it starts on double click"
-cp start-game.desktop ~/Desktop/
-gio set ~/Desktop/start-game.desktop "metadata::trusted" yes
-# Autostart game, do these two files need to differ?
-mkdir -p ~/.config/autostart/
-cp auto-start-game.desktop ~/.config/autostart/start-game.desktop
-sudo landscape-client.config --computer-title "Arcade Cabinet" --account-name standalone  --url https://landscape.dsmarcade.com/message-system --ping-url http://landscape.dsmarcade.com/ping
+cp kiosk-configuration/exit-operator-mode.desktop ~/Desktop/
+chmod a+x ~/Desktop/exit-operator-mode.desktop
+gio set ~/Desktop/exit-operator-mode.desktop "metadata::trusted" true

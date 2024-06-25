@@ -6,7 +6,7 @@ echo "this script changes system settings as root for bootup and package setting
 echo "installing for ${GAME}"
 echo "this requires a valid Ubuntu One login to be present in the file ~/.snap/auth.json. generating one interactively"
 su - user -c "snap login"
-snap install --edge ${GAME}
+snap install --stable ${GAME}
 
 apt-get update && apt-get upgrade -y
 # https://ubuntu.com/landscape/docs/install-landscape-client
@@ -92,8 +92,32 @@ X-GDM-CanRunHeadless=true
 EOF
 }
 
+# enable operator TTY at ctrl + alt + F3
+cp kiosk-configuration/autologin@.service /etc/systemd/system/
+systemctl enable autologin@tty3.service
+systemctl start autologin@tty3.service
+echo "user  ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers.d/user-nopassword
+# write out all kiosk mode configuration 
 kiosk_mode $GAME
+
+# enable fail-safe game mode on n + 1 reboot after entering operator mode
+cp kiosk-configuration/ensure-kiosk-mode.service /etc/systemd/system/ensure-kiosk-mode.service
+systemctl enable ensure-kiosk-mode.service
+
+# write out the fail-safe shell script
+cat <<-EOF > /usr/local/bin/ensure-kiosk-mode.sh
+#!/bin/bash
+if [ -f "/usr/local/share/operator-mode" ]; then
+	sed -i 's/gnome-kiosk-script-wayland/ubuntu/g' /var/lib/AccountsService/users/user
+	rm /usr/local/share/operator-mode
+else
+	sed -i 's/ubuntu/gnome-kiosk-script-wayland/g' /var/lib/AccountsService/users/user
+fi
+EOF
+chmod 755 /usr/local/bin/ensure-kiosk-mode.sh
+
+# register to landscape
 landscape-client.config --computer-title "${GAME}" --account-name standalone  --url https://landscape.dsmarcade.com/message-system --ping-url http://landscape.dsmarcade.com/ping
 #
-# /usr/share/plymouth theme goes here
+# bootup logo theme goes here
 # yikes, Plymouth is a whole thing...https://wiki.ubuntu.com/Plymouth#Splash_Theme
