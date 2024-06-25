@@ -1,0 +1,19 @@
+[Unit]
+Description=Autologin on %I
+After=systemd-user-sessions.service
+
+[Service]
+ExecStart=-/sbin/agetty --autologin user --noclear %I $TERM
+Type=idle
+Restart=always
+RestartSec=1
+UtmpIdentifier=%I
+TTYPath=/dev/%I
+TTYReset=yes
+TTYVHangup=yes
+KillMode=process
+IgnoreSIGPIPE=no
+SendSIGHUP=yes
+
+[Install]
+WantedBy=multi-user.target
