@@ -4,7 +4,7 @@ summary: Nidhogg 2 build from Game Maker Studio version 2
 description: |
   Outsmart your opponents with all kinds of weapons in this life or death tug-of-war that ends in the belly of a flying worm.
   The next installment of the epic award-winning dueling tug-of-war is coming! Stab, shoot, slice, or stomp your opponent to gain control of the screen, then book it to your side of the arena. Before long, a new opponent will appear in your way. If they kill you, they get control. Get all the way to your end of the arena to win–and be devoured by the Nidhogg. Enjoy new monstrous visuals by artist Toby Dixon and bangin beats from Mux Mool, Daedelus, Doseone, and more!
-base: core18
+base: core20
 grade: stable 
 confinement: strict
 compression: lzo # might decrease install/upgrade time

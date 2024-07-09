@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Exit Operator Mode
+Comment=Exits operator mode and reboots into the game
+Exec=/home/user/bin/operator-mode off
+Icon=terminal
+Terminal=false
+Type=Application
