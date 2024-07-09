@@ -1,6 +1,0 @@
-# example when called via autobuild.sh
-/snap/bin/$1
-
-# loop to test for crash detection and restart this script
-sleep 1.0
-exec "\$0" "\$@"

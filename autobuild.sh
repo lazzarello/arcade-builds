@@ -116,8 +116,8 @@ fi
 EOF
 chmod 755 /usr/local/bin/ensure-kiosk-mode.sh
 
-# register to landscape
-landscape-client.config --computer-title "${GAME}" --account-name standalone  --url https://landscape.dsmarcade.com/message-system --ping-url http://landscape.dsmarcade.com/ping
+# register to landscape (optional) TODO: make this a script option
+# landscape-client.config --computer-title "${GAME}" --account-name standalone  --url https://landscape.dsmarcade.com/message-system --ping-url http://landscape.dsmarcade.com/ping
 #
 # bootup logo theme goes here
 # yikes, Plymouth is a whole thing...https://wiki.ubuntu.com/Plymouth#Splash_Theme
