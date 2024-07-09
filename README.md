@@ -8,9 +8,7 @@ This is the software produced from a project to make an arcade cabinet managemen
 
 Gnome-kiosk creates a Gnome session that removes all interactive desktop features and runs a single shell script as the only application. This produces a more authentic retro arcade illusion by hiding any recognizable desktop PC bits. TODO: on some test systems, the mouse pointer does not dissapear after the game executable is launched.
 
-*Operator Mode*
-
-This mode is the default graphical session after a new cabinet is provisioned in Operator Mode, documented below. To enter operator mode after provisioning, attach a keyboard and mouse to the host PC and press ctrl + alt + F3 followed by the Enter key. You will see a black screen with a text console. Type `operator-mode on` into the console. The host PC will reboot into Operator Mode, which is a Ubuntu Desktop session. From there it is possible to make changes to the Wifi settings, add custom logos, perform manual game updates...any more!
+Kiosk mode is the default graphical session after a new cabinet is provisioned in Operator Mode, documented below. To enter operator mode after provisioning, attach a keyboard and mouse to the host PC and press ctrl + alt + F3 followed by the Enter key. You will see a black screen with a text console. Type `operator-mode on` into the console. The host PC will reboot into Operator Mode, which is a Ubuntu Desktop session. From there it is possible to make changes to the Wifi settings, add custom logos, perform manual game updates...any more!
 
 TODO: add a screenshot of the operator mode procedure
 
@@ -20,17 +18,15 @@ https://help.gnome.org/admin/system-admin-guide/stable/lockdown-single-app-mode.
 https://discourse.gnome.org/t/gnome-kiosk-configuration/11807
 https://gitlab.gnome.org/GNOME/gnome-kiosk
 
-more than anyone wants to know about how snapcraft does automatic updates
-
-https://forum.snapcraft.io/t/managing-updates/7022
-
 *Operator Mode*
 
 After installing a standard Ubuntu 24.04 desktop system from the official ISO, create a user named `user` and set a default password. Download the the release of this repository (TODO: make a release of this repository). Unzip the archive and enter this directory. Run `sudo ./autobuild.sh ${GAME}`, where the value for ${GAME} is the exact name of the snap package containing the game for this cabinet. Look in the `snaps/` directory for available names or create your own snaps. Type in the password you set for the user named `user`. This script will remove the password requirement for `user` to make operator mode work seamlessly. Do not reboot!
 
-As `user` run `./user-settings.sh` 
+As `user` run `./user-settings.sh` to set custom configuration for the operator mode session.
 
 ## Snapcraft Packages for Games
+
+*Packaging a game into a snap*
 
 Games are packaged as a snap using the canonical Snapcraft system. [Installation is simple](https://snapcraft.io/install/snapcraft/ubuntu) on a developmen Ubuntu desktop PC. The snapcraft.yaml files in the snaps directory demonstrate how to configure a custom snap for Windows binary releases of games. Currently these games are run via Wine. Binaries from Unity 3D and Game Maker Studio are tested. Other IDEs may work better in Valve's Proton, which is the runtime used on the Steam Deck and Steam on Linux.
 
@@ -41,6 +37,14 @@ Registering a private snap name is a manual process. All names must be unique in
 *Releasing a Snap*
 
 For new games, follow [Canonical's instructions](https://snapcraft.io/docs/releasing-to-the-snap-store) to get started. For updates to the snaps in this repo, upload a new build. Uploading a private snap is done after logging into the Snap as an owner or collaborator. For example, from the snap build directory, after a new build, run `snapcraft upload --release=latest/edge switch-n-shoot_1.3.6_amd64.snap` to upload version 1.3.6 (version specified in snapcraft.yaml) of switch-n-shoot to the latest/edge channel.
+
+*Snap Updates*
+
+After the initial installation, a cabinet will automatically download an update in the background when a new one is published to the latest/stable channel. It will not install the update when the game is running. In Kiosk Mode, this presents a problem where games could never update because the game is always running. To address this, if a downloaded updated can't install automatically after 14 days, it will force an upgrade the next time the system is booted.
+
+Snap updates have complicated rules. It's a primary feature of packaging games in this format. Here is more than anyone wants to know about how snapcraft does automatic updates.
+
+https://forum.snapcraft.io/t/managing-updates/7022
 
 *Collaborators*
 
