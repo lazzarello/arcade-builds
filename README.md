@@ -14,7 +14,7 @@ As `user` run `./user-settings.sh` to set custom configuration for the operator 
 
 Gnome-kiosk creates a Gnome session that removes all interactive desktop features and runs a single shell script as the only application. This produces a more authentic retro arcade illusion by hiding any recognizable desktop PC bits. TODO: on some test systems, the mouse pointer does not dissapear after the game executable is launched.
 
-Kiosk mode is the default graphical session after a new cabinet is provisioned in Operator Mode. To enter operator mode after provisioning, attach a keyboard and mouse to the host PC and press ctrl + alt + F3 followed by the Enter key. You will see a black screen with a text console. Type `operator-mode on` into the console. The host PC will reboot into Operator Mode, which is an Ubuntu Desktop session. From there it is possible to make changes to the Wifi settings, add custom logos, perform manual game updates...any more!
+Kiosk mode is the default graphical session after a new cabinet is provisioned in Operator Mode. To enter operator mode after provisioning, attach a keyboard and mouse to the host PC and press ctrl + alt + F3 followed by the Enter key. You will see a black screen with a text console. Type `operator-mode on` into the console. The host PC will reboot into Operator Mode, which is an Ubuntu Desktop session. From there it is possible to make changes to the Wifi settings, add custom logos, perform manual game updates...and more!
 
 TODO: add a screenshot of the operator mode procedure
 
