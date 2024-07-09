@@ -4,11 +4,17 @@ This is the software produced from a project to make an arcade cabinet managemen
 
 ## Game Stuff
 
+*Operator Mode*
+
+After installing a standard Ubuntu 24.04 desktop system from the official ISO, create a user named `user` and set a default password. Download the the release of this repository (TODO: make a release of this repository). Unzip the archive and enter this directory. Run `sudo ./autobuild.sh ${GAME}`, where the value for ${GAME} is the exact name of the snap package containing the game for this cabinet. **The game must have a stable release**. Jump to the Snapcraft section below to create a stable release. Look in the `snaps/` directory for available names or create your own snaps. Type in the password you set for the user named `user`. This script will remove the password requirement for `user` to make operator mode work seamlessly. Do not reboot!
+
+As `user` run `./user-settings.sh` to set custom configuration for the operator mode session. Now, reboot and your game should start up in Kiosk Mode.
+
 *Kiosk Mode*
 
 Gnome-kiosk creates a Gnome session that removes all interactive desktop features and runs a single shell script as the only application. This produces a more authentic retro arcade illusion by hiding any recognizable desktop PC bits. TODO: on some test systems, the mouse pointer does not dissapear after the game executable is launched.
 
-Kiosk mode is the default graphical session after a new cabinet is provisioned in Operator Mode, documented below. To enter operator mode after provisioning, attach a keyboard and mouse to the host PC and press ctrl + alt + F3 followed by the Enter key. You will see a black screen with a text console. Type `operator-mode on` into the console. The host PC will reboot into Operator Mode, which is a Ubuntu Desktop session. From there it is possible to make changes to the Wifi settings, add custom logos, perform manual game updates...any more!
+Kiosk mode is the default graphical session after a new cabinet is provisioned in Operator Mode. To enter operator mode after provisioning, attach a keyboard and mouse to the host PC and press ctrl + alt + F3 followed by the Enter key. You will see a black screen with a text console. Type `operator-mode on` into the console. The host PC will reboot into Operator Mode, which is an Ubuntu Desktop session. From there it is possible to make changes to the Wifi settings, add custom logos, perform manual game updates...any more!
 
 TODO: add a screenshot of the operator mode procedure
 
@@ -17,12 +23,6 @@ TODO: add a screenshot of the operator mode procedure
 https://help.gnome.org/admin/system-admin-guide/stable/lockdown-single-app-mode.html.en
 https://discourse.gnome.org/t/gnome-kiosk-configuration/11807
 https://gitlab.gnome.org/GNOME/gnome-kiosk
-
-*Operator Mode*
-
-After installing a standard Ubuntu 24.04 desktop system from the official ISO, create a user named `user` and set a default password. Download the the release of this repository (TODO: make a release of this repository). Unzip the archive and enter this directory. Run `sudo ./autobuild.sh ${GAME}`, where the value for ${GAME} is the exact name of the snap package containing the game for this cabinet. Look in the `snaps/` directory for available names or create your own snaps. Type in the password you set for the user named `user`. This script will remove the password requirement for `user` to make operator mode work seamlessly. Do not reboot!
-
-As `user` run `./user-settings.sh` to set custom configuration for the operator mode session.
 
 ## Snapcraft Packages for Games
 
