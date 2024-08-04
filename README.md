@@ -36,7 +36,7 @@ Registering a private snap name is a manual process. All names must be unique in
 
 *Releasing a Snap*
 
-For new games, follow [Canonical's instructions](https://snapcraft.io/docs/releasing-to-the-snap-store) to get started. For updates to the snaps in this repo, upload a new build. Uploading a private snap is done after logging into the Snap as an owner or collaborator. For example, from the snap build directory, after a new build, run `snapcraft upload --release=latest/edge switch-n-shoot_1.3.6_amd64.snap` to upload version 1.3.6 (version specified in snapcraft.yaml) of switch-n-shoot to the latest/edge channel.
+For new games, follow [Canonical's instructions](https://snapcraft.io/docs/releasing-to-the-snap-store) to get started. To update a snap, upload a new build. Uploading a private snap is done after logging into snapcraft (`snapcraft login`) as an owner or collaborator. Dan or Lee are responsible for creating new owners and collaborators. For example, from a newly built snap directory, run `snapcraft upload --release=latest/edge switch-n-shoot_1.3.6_amd64.snap` to upload version 1.3.6 (version specified in snapcraft.yaml) of switch-n-shoot to the latest/edge channel.
 
 *Snap Updates*
 
@@ -49,6 +49,12 @@ https://forum.snapcraft.io/t/managing-updates/7022
 *Collaborators*
 
 Private snaps can have a list of Ubuntu One users who are allowed to upload new releases. This is done through each snap's dashboard page. For example https://dashboard.snapcraft.io/snaps/perfect-pour/collaboration/ for the private snap Perfect Pour. **This URL is only visible to that game's collaborators.**
+
+*Tracking a differnt channel*
+
+By default, games **track** the **stable channel**. Any updates to stable will be automatically downloaded by online units. If you want to **refresh** a release from the **edge channel** you can do a one-off command like `snap refresh --channel=latest/edge`. To go back to stable, **refresh** again like `snap refresh --channel=latest/stable`.
+
+If you want to **switch** to the **edge channel** you can do so like `snap switch --edge perfect-pour` for the game perfect pour. This will download automatic updates from the edge channel.
 
 ## Cloud stuff (optional)
 
