@@ -64,7 +64,9 @@ EOF
 
 su - user -c "mkdir -p ~/.local/bin"
 cat <<-EOF > $KIOSK_SCRIPT
+sleep 15.0
 /usr/bin/snap refresh $1
+sleep 10.0
 /snap/bin/$1
 # loop to test for crash detection and restart this script
 sleep 1.0
