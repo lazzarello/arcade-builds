@@ -10,7 +10,7 @@ snap install --stable ${GAME}
 
 apt-get update && apt-get upgrade -y
 # https://ubuntu.com/landscape/docs/install-landscape-client
-apt-get install -y gnome-kiosk
+apt-get install -y gnome-kiosk ydotool
 snap install landscape-client
 apt remove -y unattended-upgrades update-notifier
 
@@ -64,9 +64,16 @@ EOF
 
 su - user -c "mkdir -p ~/.local/bin"
 cat <<-EOF > $KIOSK_SCRIPT
-sleep 15.0
-/usr/bin/snap refresh $1
-sleep 10.0
+for i in {1..60}
+do
+  response=$(curl -s -o /dev/null -w "%{http_code}" http://api.snapcraft.io)
+  if [ "$response" -eq 200 ]; then
+    /usr/bin/snap refresh $1
+    break
+  fi
+  sleep 1
+done
+sudo ydotool mousemove 1920 1080
 /snap/bin/$1
 # loop to test for crash detection and restart this script
 sleep 1.0
