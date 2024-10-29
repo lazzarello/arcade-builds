@@ -1,68 +1,87 @@
 name: nidhogg-2
-version: "2023071301"
+version: "2024102901"
 summary: Nidhogg 2 build from Game Maker Studio version 2
 description: |
   Outsmart your opponents with all kinds of weapons in this life or death tug-of-war that ends in the belly of a flying worm.
   The next installment of the epic award-winning dueling tug-of-war is coming! Stab, shoot, slice, or stomp your opponent to gain control of the screen, then book it to your side of the arena. Before long, a new opponent will appear in your way. If they kill you, they get control. Get all the way to your end of the arena to win–and be devoured by the Nidhogg. Enjoy new monstrous visuals by artist Toby Dixon and bangin beats from Mux Mool, Daedelus, Doseone, and more!
-base: core18
+base: core20
 grade: stable 
 confinement: strict
 compression: lzo # might decrease install/upgrade time
+architectures:
+  - build-on: amd64
+plugs:
+  wine-runtime-c20:
+    interface: content
+    target: $SNAP/wine-runtime
+    default-provider: wine-platform-runtime-core20
+  wine-7-devel:
+    interface: content
+    target: $SNAP/wine-platform
+    default-provider: wine-platform-7-devel-core20
+
+environment:
+  WINEDLLOVERRIDES: "mscoree,mshtml="  # Prevent pop-ups about Wine Mono and Wine Gecko
+  RUN_EXE: "$SNAP/Nidhogg_2.exe"
+  SOMMELIER_KEEP_CWD: "1"  # Don't change the working directory so relative paths still work
+  NO_AT_BRIDGE: "1"  # Fix yad error Failed to connect to socket /tmp/dbus-xxx: No such file or directory
+  DISABLE_WAYLAND: "1"  # Fix gtk decoration under wayland session
+  SYSTEM_WGETRC: $SNAP/wine-runtime/etc/wgetrc
+
 parts:
   nidhogg-2:
-    stage-packages:
-      - libasn1-8-heimdal
-      - libasound2
-      - libasound2-data
-      - libasound2-plugins
-      - libcurl3-gnutls
-      - libgl1
-      - libglu1-mesa
-      - libglvnd0
-      - libglx0
-      - libgssapi3-heimdal
-      - libhcrypto4-heimdal
-      - libheimbase1-heimdal
-      - libheimntlm0-heimdal
-      - libhx509-5-heimdal
-      - libkrb5-26-heimdal
-      - libldap-2.4-2
-      - libnghttp2-14
-      - libopenal1
-      - libpsl5
-      - libroken18-heimdal
-      - librtmp1
-      - libsasl2-2
-      - libsndio6.1
-      - libwind0-heimdal
-      - libx11-6
-      - libxau6
-      - libxcb1
-      - libxdmcp6
-      - libxext6
-      - libxrandr2
-      - libxrender1
-      - libxxf86vm1
     plugin: dump
-    source: Nidhogg-2_GMS2_2023071301.zip
-    after:
-      - desktop-glib-only
-  desktop-glib-only:
-    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
-    source-subdir: glib-only
+    source: Nidhogg2-01.zip
+    build-packages: 
+      - wget
+  sommelier:
     plugin: make
+    source: https://github.com/snapcrafters/sommelier-core.git
+    source-branch: "master"
     build-packages:
-      - libglib2.0-dev
-    stage-packages:
-      - libglib2.0-bin
+      - libc6-dev-i386
+      - gcc-multilib
+
+  # This reverts changes from https://github.com/snapcore/snapcraft/pull/3586
+  fix-fontconfig:
+    plugin: nil
+    after: [gnome-3-38-extension]
+    override-prime: |
+      sed -i '/snap-package/,+1d' $SNAPCRAFT_PRIME/snap/command-chain/desktop-launch
+
+  fix-bindtext:
+    plugin: nil
+    after: [gnome-3-38-extension]
+    override-prime: |
+      sed -i "$(grep -in bindtext $SNAPCRAFT_PRIME/snap/command-chain/desktop-launch | cut -d':' -f1 | tail -2 | head -1)d" $SNAPCRAFT_PRIME/snap/command-chain/desktop-launch
+      sed -i "$(grep -in bindtext $SNAPCRAFT_PRIME/snap/command-chain/desktop-launch | cut -d':' -f1 | tail -1)d" $SNAPCRAFT_PRIME/snap/command-chain/desktop-launch
 apps:
   nidhogg-2:
-    command: bin/desktop-launch $SNAP/Nidhogg_2_GMS2
+    extensions: [ gnome-3-38 ]
+    command: bin/sommelier run-exe
     plugs:
-      - opengl
-      - x11
       - audio-playback
-      - desktop
-      - desktop-legacy
-      - screen-inhibit-control
-      - joystick
+      - opengl
+      - home
+      - network
+      - hardware-observe
+      - process-control
+      - cups-control
+      - removable-media
+  wine:
+    extensions: [ gnome-3-38 ]
+    command: bin/sommelier
+    plugs:
+      - home
+      - network
+      - hardware-observe
+      - process-control
+      - cups-control
+      - removable-media
+  # The winetricks command can be used to run winetricks inside the wine
+  # environment that this snap uses.
+  winetricks:
+    extensions: [ gnome-3-38 ]
+    command: bin/sommelier winetricks
+    plugs:
+      - network
