@@ -12,7 +12,7 @@ gsettings set org.gnome.desktop.background primary-color '#000000'
 gsettings set org.gnome.desktop.background picture-uri ''
 gsettings set org.gnome.desktop.notifications show-banners false
 gsettings set com.ubuntu.update-notifier no-show-notifications true
-gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 16
+gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 128
 
 # add operator-mode script to executable path
 mkdir ~/bin
